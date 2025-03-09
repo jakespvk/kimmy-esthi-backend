@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class AppointmentContext : DbContext
 {
-    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<Appointment> nonbooked_appointments { get; set; }
 
     public string DbPath { get; }
 

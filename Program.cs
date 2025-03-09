@@ -1,23 +1,21 @@
-using System.Web;
-
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
         {
-        options.AddPolicy(name: MyAllowSpecificOrigins,
-                policy  =>
-                {
-                policy.WithOrigins("http://localhost:3000")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-                });
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
         });
 var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins);
 
 using var db = new AppointmentContext();
-var appointmentsOnSelectedDay = db.Appointments
+var appointmentsOnSelectedDay = db.nonbooked_appointments
     .Where(d => d.Date == "11/19/2024")
     .ToArray();
 //AppointmentCollection.Init();
@@ -54,14 +52,14 @@ app.MapPost("/api/appointments", async (HttpRequest request) =>
 {
     var date = await request.ReadFromJsonAsync<string>();
     date = date?.ToString();
-    appointmentsOnSelectedDay = db.Appointments
+    appointmentsOnSelectedDay = db.nonbooked_appointments
         .Where(d => d.Date == date)
         //.OrderBy(t => t.Time)
         .ToArray();
     return appointmentsOnSelectedDay;
 });
 
-app.MapPost("/api/appointment", (ScheduledAppointment scheduledAppointment) => 
+app.MapPost("/api/appointment", (ScheduledAppointment scheduledAppointment) =>
 {
     return Results.Ok("Your appointment has been created");
 });

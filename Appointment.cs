@@ -1,9 +1,9 @@
 public class Appointment
 {
-	[System.ComponentModel.DataAnnotations.Key]
-    public int Id { get; }
-    public string? Date { get; }
-    public string? Time { get; }
-    public string? Status { get; }
+    [System.ComponentModel.DataAnnotations.Key]
+    public string? Id { get; set; }
+    public string? Date { get; set; }
+    public string? Time { get; set; }
+    public string? Status { get; set; }
 }
 
