@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/kimmy-esthi-backend.props" />
+</Project>

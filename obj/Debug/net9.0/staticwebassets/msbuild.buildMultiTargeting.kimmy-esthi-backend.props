@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/kimmy-esthi-backend.props" />
+</Project>
