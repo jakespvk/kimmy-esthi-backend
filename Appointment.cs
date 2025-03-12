@@ -1,9 +1,13 @@
+public enum AppointmentStatus
+{
+    Available,
+    Booked,
+}
 public class Appointment
 {
-    [System.ComponentModel.DataAnnotations.Key]
-    public string? Id { get; set; }
-    public string? Date { get; set; }
-    public string? Time { get; set; }
-    public string? Status { get; set; }
+    public int Id { get; set; }
+    public DateOnly Date { get; set; }
+    public DateTime Time { get; set; }
+    public AppointmentStatus Status { get; set; }
 }
 
