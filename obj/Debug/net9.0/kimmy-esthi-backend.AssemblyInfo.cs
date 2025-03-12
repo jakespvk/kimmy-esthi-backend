@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("kimmy-esthi-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+334243c19b184bd3b070df0674d3f8e68125dce8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c09714d31daa17cdb4b4eab7758ce2cd74abe70")]
 [assembly: System.Reflection.AssemblyProductAttribute("kimmy-esthi-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("kimmy-esthi-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
