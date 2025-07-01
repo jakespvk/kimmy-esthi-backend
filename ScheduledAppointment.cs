@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 public class ScheduledAppointment
 {
     [Key]
-    public required Guid AppointmentId;
+    public Guid AppointmentId { get; set; }
     //
     // private string _preferredName;
     // private string _email;
