@@ -1,62 +1,46 @@
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<AppointmentDb>(opt => opt.UseSqlite("Data Source=db1.db"));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddCors(options =>
+internal class Program
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-            policy =>
-            {
-                policy.WithOrigins("http://localhost:3000")
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-            });
-});
-var app = builder.Build();
+    private static void Main(string[] args)
+    {
+        var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        var builder = WebApplication.CreateBuilder(args);
 
-app.UseCors(MyAllowSpecificOrigins);
+        builder.Services.AddDbContext<AppointmentDb>(opt => opt.UseSqlite("Data Source=db1.db"));
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+        });
+        var app = builder.Build();
 
-app.MapGet("/appointments", async (AppointmentDb db) =>
-    await db.Appointments.ToListAsync());
+        app.UseCors(MyAllowSpecificOrigins);
 
-app.MapGet("/appointments/{date}", async (DateOnly date, AppointmentDb db) =>
-{
-    return await db.Appointments.Where(x => x.Date.ToString() == date.ToString()).ToListAsync();
-});
+        app.MapGet("/appointments", async (AppointmentDb db) =>
+            await db.Appointments.ToListAsync());
 
-/*app.MapGet("/api/appointments/{date}", (HttpRequest request) =>
-{
-    var apptDate = request.RouteValues["date"]?.ToString();
-    var cleanedInput = HttpUtility.UrlDecode(apptDate);
-    return AppointmentCollection.GetAppointmentsForGivenDay(cleanedInput);
-});*/
+        app.MapGet("/appointments/{date}", async (DateOnly date, AppointmentDb db) =>
+        {
+            return await db.Appointments.Where(x => x.Date.ToString() == date.ToString()).ToListAsync();
+        });
 
+        app.MapPost("/appointment", async (Appointment appointment, AppointmentDb db) =>
+        {
+            await db.Appointments.AddAsync(appointment);
+            await db.SaveChangesAsync();
+            return Results.Ok();
+        });
 
-/*app.MapPost("/api/appointments", async (HttpRequest request) =>
-{
-    var date = await request.ReadFromJsonAsync<string>();
-    date = date?.ToString();
-    appointmentsOnSelectedDay = AppointmentCollection.GetAppointmentsForGivenDay(date);
-    return appointmentsOnSelectedDay;
-});*/
-
-// app.MapPost("/api/appointments", async (HttpRequest request) =>
-// {
-//     var date = await request.ReadFromJsonAsync<string>();
-//     date = date?.ToString();
-//     appointmentsOnSelectedDay = db.nonbooked_appointments
-//         .Where(d => d.Date == date)
-//         //.OrderBy(t => t.Time)
-//         .ToArray();
-//     return appointmentsOnSelectedDay;
-// });
-//
-// app.MapPost("/api/appointment", (ScheduledAppointment scheduledAppointment) =>
-// {
-//     return Results.Ok("Your appointment has been created");
-// });
-
-app.Run();
+        app.Run();
+    }
+}
