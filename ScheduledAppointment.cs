@@ -1,9 +1,10 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 public class ScheduledAppointment
 {
     [Key]
-    public Guid AppointmentId { get; set; }
+    public required Guid AppointmentId { get; set; }
     //
     // private string _preferredName;
     // private string _email;

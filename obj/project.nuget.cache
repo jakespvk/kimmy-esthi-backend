@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KOjcLsjX4Yc=",
+  "dgSpecHash": "6x4YgjDlsjQ=",
   "success": true,
   "projectFilePath": "/home/jakes/cecs/forfun/web/kimmy-esthi-3/kimmy-esthi-backend/kimmy-esthi-backend.csproj",
   "expectedPackageFiles": [
@@ -53,7 +53,7 @@
     "/home/jakes/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/jakes/.nuget/packages/system.text.json/9.0.2/system.text.json.9.0.2.nupkg.sha512",
     "/home/jakes/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
-    "/home/jakes/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.1/microsoft.aspnetcore.app.ref.9.0.1.nupkg.sha512"
+    "/home/jakes/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.4/microsoft.aspnetcore.app.ref.9.0.4.nupkg.sha512"
   ],
   "logs": []
 }

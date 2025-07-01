@@ -1,5 +1,7 @@
-public class AppointmentCollection {
+using System.Collections.Generic;
 
+public class AppointmentCollection
+{
     public static List<Appointment> appointments = new List<Appointment>();
 
     /*public static void Init()

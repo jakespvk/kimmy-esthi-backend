@@ -1,11 +1,10 @@
 using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 internal class Program
 {
@@ -13,7 +12,6 @@ internal class Program
     {
         var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         var builder = WebApplication.CreateBuilder(args);
-
         builder.Services.AddDbContext<AppointmentDb>(opt => opt.UseSqlite("Data Source=db1.db"));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         builder.Services.AddCors(options =>
@@ -38,11 +36,26 @@ internal class Program
             return await db.Appointments.Where(x => x.Date.ToString() == date.ToString()).ToListAsync();
         });
 
-        app.MapPost("/appointment", async (Appointment appointment, AppointmentDb db) =>
+        app.MapGet("/appointment/{id}", async (Guid id, AppointmentDb db) =>
+        {
+            var appointment = await db.Appointments
+                .Where(x =>
+                        x.Id.ToString()
+                        .Equals(
+                            id.ToString()))
+                .FirstOrDefaultAsync();
+            if (appointment is Appointment)
+            {
+                return Results.Ok(new AppointmentDateTime { Time = appointment.Time, Date = appointment.Date });
+            }
+            return Results.NotFound();
+        });
+
+        app.MapPost("/appointment", async ([FromBody] Appointment appointment, AppointmentDb db) =>
         {
             await db.Appointments.AddAsync(appointment);
             await db.SaveChangesAsync();
-            return Results.Ok();
+            return Results.Ok("Appointment created successfully");
         });
 
         app.Run();
