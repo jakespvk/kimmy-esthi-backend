@@ -1,5 +1,6 @@
 import datetime
 import csv
+import uuid
 
 data = []
 
@@ -11,7 +12,7 @@ for i in range(13):
     else:
         apptTime = f"{i + 9}:00 AM"
     for j in range(26):
-        apptId = i + (13 * j)
+        apptId = str(uuid.uuid4())
         print(apptId)
         apptDate = (datetime.datetime.now() + datetime.timedelta(days=j)).strftime(
             "%m/%d/%Y"
