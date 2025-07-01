@@ -1,21 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+
 public class ScheduledAppointment
 {
-    private string _preferredName;
-    private string _email;
-    private string _phoneNumber;
-    private string _skinConcerns;
+    [Key]
+    public required Guid AppointmentId;
+    //
+    // private string _preferredName;
+    // private string _email;
+    // private string _phoneNumber;
+    // private string _skinConcerns;
+    //
+    // public ScheduledAppointment(string preferredName,
+    //         string email, string phoneNumber, string skinConcerns)
+    // {
+    //     _preferredName = preferredName;
+    //     _email = email;
+    //     _phoneNumber = phoneNumber;
+    //     _skinConcerns = skinConcerns;
+    // }
 
-    public ScheduledAppointment(string preferredName, 
-            string email, string phoneNumber, string skinConcerns) 
-    {
-        _preferredName = preferredName;
-        _email = email;
-        _phoneNumber = phoneNumber;
-        _skinConcerns = skinConcerns;
-    }
-
-    public string PreferredName { get { return _preferredName; } }
-    public string Email { get { return _email; } }
-    public string PhoneNumber { get { return _phoneNumber; } }
-    public string SkinConcerns { get { return _skinConcerns; } }
+    public required string PreferredName { get; set; }
+    public required string Email { get; set; }
+    public required string PhoneNumber { get; set; }
+    public required string SkinConcerns { get; set; }
 }
