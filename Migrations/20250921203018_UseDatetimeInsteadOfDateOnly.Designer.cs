@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(AppointmentDb))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20250921203018_UseDatetimeInsteadOfDateOnly")]
+    partial class UseDatetimeInsteadOfDateOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -23,10 +26,6 @@ namespace kimmy_esthi_backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ServiceName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
@@ -61,25 +60,6 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasKey("AppointmentId");
 
                     b.ToTable("ScheduledAppointments");
-                });
-
-            modelBuilder.Entity("kimmy_esthi_backend.AdminUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdminUsers");
                 });
 
             modelBuilder.Entity("ScheduledAppointment", b =>

@@ -5,9 +5,9 @@ public class Appointment
 {
     [Key]
     public Guid Id { get; set; }
-    public DateOnly Date { get; set; }
-    public DateTime Time { get; set; }
+    public DateTime DateTime { get; set; }
     public AppointmentStatus Status { get; set; }
+    public required string ServiceName { get; set; }
     public ScheduledAppointment? ScheduledAppointment { get; set; }
 }
 

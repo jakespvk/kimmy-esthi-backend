@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using kimmy_esthi_backend;
 
 internal class Program
 {
@@ -13,13 +14,13 @@ internal class Program
         var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddDbContext<AppointmentDb>(opt => opt.UseSqlite("Data Source=db1.db"));
-        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        // builder.Services.AddDatabaseDeveloperPageExceptionFilter();
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: MyAllowSpecificOrigins,
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000")
+                        policy.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                     });
@@ -31,9 +32,10 @@ internal class Program
         app.MapGet("/appointments", async (AppointmentDb db) =>
             await db.Appointments.ToListAsync());
 
-        app.MapGet("/appointments/{date}", async (DateOnly date, AppointmentDb db) =>
+        app.MapGet("/appointments/{date}", async (DateTime date, AppointmentDb db) =>
         {
-            return await db.Appointments.Where(x => x.Date.ToString() == date.ToString()).ToListAsync();
+            Console.WriteLine("DB file: " + db.Database.GetDbConnection().DataSource);
+            return await db.Appointments.Where(x => x.DateTime.Date == date.Date).ToListAsync();
         });
 
         app.MapGet("/appointment/{id}", async (Guid id, AppointmentDb db) =>
@@ -44,19 +46,44 @@ internal class Program
                         .Equals(
                             id.ToString()))
                 .FirstOrDefaultAsync();
-            if (appointment is Appointment)
+            if (appointment is null)
             {
-                return Results.Ok(new AppointmentDateTime { Time = appointment.Time, Date = appointment.Date });
+                return Results.NotFound();
             }
-            return Results.NotFound();
+            return Results.Ok(new AppointmentDateTime { Date = appointment.DateTime.Date, Time = appointment.DateTime });
         });
 
-        app.MapPost("/appointment", async ([FromBody] Appointment appointment, AppointmentDb db) =>
+        app.MapPost("/appointment", async ([FromBody] AppointmentRequest appointmentRequest, AppointmentDb db) =>
         {
-            await db.Appointments.AddAsync(appointment);
+            var appointmentToUpdate = await db.Appointments
+                .Where(x => x.Id.ToString().Equals(appointmentRequest.AppointmentId.ToString()))
+                .FirstOrDefaultAsync();
+            if (appointmentToUpdate is null)
+            {
+                return Results.NotFound();
+            }
+            appointmentToUpdate.ServiceName = appointmentRequest.ServiceName;
+            appointmentToUpdate.ScheduledAppointment = new ScheduledAppointment
+            {
+                AppointmentId = new Guid(appointmentRequest.ScheduledAppointment.AppointmentId.ToString()),
+                PreferredName = appointmentRequest.ScheduledAppointment.PreferredName,
+                Email = appointmentRequest.ScheduledAppointment.Email,
+                PhoneNumber = appointmentRequest.ScheduledAppointment.PhoneNumber,
+                SkinConcerns = appointmentRequest.ScheduledAppointment.SkinConcerns,
+            };
+            appointmentToUpdate.Status = AppointmentStatus.Booked;
             await db.SaveChangesAsync();
-            return Results.Ok("Appointment created successfully");
+            return Results.Ok("Appointment request sent!");
         });
+
+        var admin = app.MapGroup("admin");
+        admin.MapPost("/", async ([FromBody] AdminUser adminUser, AppointmentDb db) =>
+        {
+            return await db.AdminUsers.FindAsync(adminUser);
+        });
+
+        admin.MapGet("/", async (AppointmentDb db) =>
+                await db.Appointments.ToListAsync());
 
         app.Run();
     }

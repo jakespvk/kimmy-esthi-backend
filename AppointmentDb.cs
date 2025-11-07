@@ -1,3 +1,4 @@
+using kimmy_esthi_backend;
 using Microsoft.EntityFrameworkCore;
 
 public class AppointmentDb : DbContext
@@ -7,6 +8,7 @@ public class AppointmentDb : DbContext
 
     public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<ScheduledAppointment> ScheduledAppointments => Set<ScheduledAppointment>();
+    public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
