@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(AppointmentDb))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20251108200154_Move_ServiceName_ToScheduledAppointment2")]
+    partial class Move_ServiceName_ToScheduledAppointment2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -25,12 +28,31 @@ namespace kimmy_esthi_backend.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ServiceName")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("AppointmentRequest", b =>
+                {
+                    b.Property<Guid>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ScheduledAppointmentAppointmentId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AppointmentId");
+
+                    b.HasIndex("ScheduledAppointmentAppointmentId");
+
+                    b.ToTable("AppointmentRequest");
                 });
 
             modelBuilder.Entity("ScheduledAppointment", b =>
@@ -60,7 +82,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("AppointmentId");
 
-                    b.ToTable("ScheduledAppointment");
+                    b.ToTable("ScheduledAppointments");
                 });
 
             modelBuilder.Entity("kimmy_esthi_backend.AdminUser", b =>
@@ -80,6 +102,17 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AdminUsers");
+                });
+
+            modelBuilder.Entity("AppointmentRequest", b =>
+                {
+                    b.HasOne("ScheduledAppointment", "ScheduledAppointment")
+                        .WithMany()
+                        .HasForeignKey("ScheduledAppointmentAppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ScheduledAppointment");
                 });
 
             modelBuilder.Entity("ScheduledAppointment", b =>

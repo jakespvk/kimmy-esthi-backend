@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using kimmy_esthi_backend;
+using System.Collections.Generic;
 
 internal class Program
 {
@@ -34,18 +35,12 @@ internal class Program
 
         app.MapGet("/appointments/{date}", async (DateTime date, AppointmentDb db) =>
         {
-            Console.WriteLine("DB file: " + db.Database.GetDbConnection().DataSource);
             return await db.Appointments.Where(x => x.DateTime.Date == date.Date).ToListAsync();
         });
 
         app.MapGet("/appointment/{id}", async (Guid id, AppointmentDb db) =>
         {
-            var appointment = await db.Appointments
-                .Where(x =>
-                        x.Id.ToString()
-                        .Equals(
-                            id.ToString()))
-                .FirstOrDefaultAsync();
+            var appointment = await db.Appointments.FindAsync(id);
             if (appointment is null)
             {
                 return Results.NotFound();
@@ -56,16 +51,20 @@ internal class Program
         app.MapPost("/appointment", async ([FromBody] AppointmentRequest appointmentRequest, AppointmentDb db) =>
         {
             var appointmentToUpdate = await db.Appointments
-                .Where(x => x.Id.ToString().Equals(appointmentRequest.AppointmentId.ToString()))
+                .Include(a => a.ScheduledAppointment)
+                .Where(x => x.Id == appointmentRequest.AppointmentId)
                 .FirstOrDefaultAsync();
             if (appointmentToUpdate is null)
             {
                 return Results.NotFound();
             }
-            appointmentToUpdate.ServiceName = appointmentRequest.ServiceName;
+            if (appointmentToUpdate.ScheduledAppointment != null)
+            {
+                return Results.BadRequest();
+            }
             appointmentToUpdate.ScheduledAppointment = new ScheduledAppointment
             {
-                AppointmentId = new Guid(appointmentRequest.ScheduledAppointment.AppointmentId.ToString()),
+                ServiceName = appointmentRequest.ScheduledAppointment.ServiceName,
                 PreferredName = appointmentRequest.ScheduledAppointment.PreferredName,
                 Email = appointmentRequest.ScheduledAppointment.Email,
                 PhoneNumber = appointmentRequest.ScheduledAppointment.PhoneNumber,
@@ -76,14 +75,52 @@ internal class Program
             return Results.Ok("Appointment request sent!");
         });
 
+        app.MapPut("/appointment", async (AppointmentDb db) =>
+        {
+            var appointment = new Appointment { DateTime = DateTime.Now, Status = AppointmentStatus.Available };
+            await db.AddAsync(appointment);
+            await db.SaveChangesAsync();
+            return Results.Ok(appointment);
+        });
+
+        app.MapGet("/appointment1", async (AppointmentDb db) =>
+        {
+            return await db.Appointments.Where(a => a.DateTime.Date == DateTime.Now.Date).ToListAsync();
+        });
+
         var admin = app.MapGroup("admin");
-        admin.MapPost("/", async ([FromBody] AdminUser adminUser, AppointmentDb db) =>
+        admin.MapPost("/", async ([FromBody] LoginRequest loginRequest, AppointmentDb db) =>
+        {
+            if (loginRequest.Username == "test" && loginRequest.Password == "test")
+            {
+                return Results.Ok("hi!!!");
+            }
+            else
+            {
+                return Results.BadRequest();
+            }
+        });
+
+        admin.MapPost("/old", async ([FromBody] AdminUser adminUser, AppointmentDb db) =>
         {
             return await db.AdminUsers.FindAsync(adminUser);
         });
 
         admin.MapGet("/", async (AppointmentDb db) =>
                 await db.Appointments.ToListAsync());
+
+        admin.MapPost("/appointments", async (List<Appointment> appointments, AppointmentDb db) =>
+        {
+            foreach (var appt in appointments)
+            {
+                if (appt is Appointment)
+                {
+                    await db.AddAsync(appt);
+                }
+            }
+            await db.SaveChangesAsync();
+            return Results.Ok();
+        });
 
         app.Run();
     }

@@ -7,7 +7,6 @@ public class AppointmentDb : DbContext
         : base(options) { }
 
     public DbSet<Appointment> Appointments => Set<Appointment>();
-    public DbSet<ScheduledAppointment> ScheduledAppointments => Set<ScheduledAppointment>();
     public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(AppointmentDb))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20251108194602_Move_ServiceName_ToScheduledAppointment")]
+    partial class Move_ServiceName_ToScheduledAppointment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -23,6 +26,9 @@ namespace kimmy_esthi_backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServiceName")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
@@ -60,7 +66,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("AppointmentId");
 
-                    b.ToTable("ScheduledAppointment");
+                    b.ToTable("ScheduledAppointments");
                 });
 
             modelBuilder.Entity("kimmy_esthi_backend.AdminUser", b =>
@@ -95,6 +101,15 @@ namespace kimmy_esthi_backend.Migrations
                 {
                     b.Navigation("ScheduledAppointment");
                 });
+
+            modelBuilder.Entity("AppointmentRequest", b =>
+                    {
+                        b.HasOne("Appointment", null)
+                            .WithOne("ScheduledAppointment")
+                            .HasForeignKey("ScheduledAppointment", "AppointmentId")
+                            .OnDelete(DeleteBehavior.Cascade)
+                            .IsRequired();
+                    });
 #pragma warning restore 612, 618
         }
     }

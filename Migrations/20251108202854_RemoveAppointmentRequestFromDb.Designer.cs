@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(AppointmentDb))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20251108202854_RemoveAppointmentRequestFromDb")]
+    partial class RemoveAppointmentRequestFromDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -60,7 +63,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("AppointmentId");
 
-                    b.ToTable("ScheduledAppointment");
+                    b.ToTable("ScheduledAppointments");
                 });
 
             modelBuilder.Entity("kimmy_esthi_backend.AdminUser", b =>
