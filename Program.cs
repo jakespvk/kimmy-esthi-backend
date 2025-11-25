@@ -84,6 +84,7 @@ app.MapGet("/appointment1", async (AppointmentDb db) =>
 });
 
 var admin = app.MapGroup("admin");
+
 admin.MapPost("/", async ([FromBody] LoginRequest loginRequest, AppointmentDb db) =>
 {
     if (loginRequest.Username == "kimmxthy" && loginRequest.Password == "KakeKakeKake4eva")
@@ -100,14 +101,6 @@ admin.MapPost("/", async ([FromBody] LoginRequest loginRequest, AppointmentDb db
     }
 });
 
-admin.MapPost("/old", async ([FromBody] AdminUser adminUser, AppointmentDb db) =>
-{
-    return await db.AdminUsers.FindAsync(adminUser);
-});
-
-admin.MapGet("/", async (AppointmentDb db) =>
-        await db.Appointments.ToListAsync());
-
 admin.MapPost("/{token}/appointments", async (string token, Appointment[] appointments, AppointmentDb db) =>
 {
     if (!await db.AdminUsers.AnyAsync(x => x.Token == token))
@@ -116,13 +109,17 @@ admin.MapPost("/{token}/appointments", async (string token, Appointment[] appoin
     }
     foreach (var appt in appointments)
     {
-        if (appt is not null)
+        if (appt is null)
         {
-            await db.AddAsync(appt);
+            return Results.BadRequest($"appointment: {appt?.DateTime} was empty");
+        }
+        else if (!await db.Appointments.AnyAsync(x => x.DateTime == appt.DateTime))
+        {
+            return Results.BadRequest($"appointment: {appt.DateTime:yyyy-MM-dd HH:mm} already exists");
         }
         else
         {
-            return Results.BadRequest();
+            await db.Appointments.AddAsync(appt);
         }
     }
     await db.SaveChangesAsync();
@@ -152,10 +149,10 @@ admin.MapGet("/{token}/appointments", async ([FromQuery] bool booked, [FromQuery
     return await db.Appointments.Include(x => x.ScheduledAppointment).OrderBy(x => x.DateTime).ToListAsync();
 });
 
-admin.MapPost("/secret", async (AppointmentDb db) =>
-        {
-            await db.AdminUsers.AddAsync(new AdminUser { Username = "kimmxthy", Password = "KakeKakeKake4eva" });
-            await db.SaveChangesAsync();
-        });
+// admin.MapPost("/secret", async (AppointmentDb db) =>
+//         {
+//             await db.AdminUsers.AddAsync(new AdminUser { Username = "kimmxthy", Password = "KakeKakeKake4eva" });
+//             await db.SaveChangesAsync();
+//         });
 
 app.Run();
