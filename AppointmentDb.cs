@@ -11,10 +11,10 @@ public class AppointmentDb : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ScheduledAppointment>()
-            .HasKey(sa => sa.AppointmentId);
+        modelBuilder.Entity<ScheduledAppointment>().HasKey(sa => sa.AppointmentId);
 
-        modelBuilder.Entity<Appointment>()
+        modelBuilder
+            .Entity<Appointment>()
             .HasOne(a => a.ScheduledAppointment)
             .WithOne()
             .HasForeignKey<ScheduledAppointment>(sa => sa.AppointmentId);

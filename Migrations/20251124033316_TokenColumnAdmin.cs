@@ -14,15 +14,14 @@ namespace kimmy_esthi_backend.Migrations
                 name: "Token",
                 table: "AdminUsers",
                 type: "TEXT",
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Token",
-                table: "AdminUsers");
+            migrationBuilder.DropColumn(name: "Token", table: "AdminUsers");
         }
     }
 }

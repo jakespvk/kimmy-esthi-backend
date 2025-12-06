@@ -15,7 +15,8 @@ namespace kimmy_esthi_backend.Migrations
                 table: "ScheduledAppointments",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ServiceName",
@@ -23,15 +24,14 @@ namespace kimmy_esthi_backend.Migrations
                 type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ServiceName",
-                table: "ScheduledAppointments");
+            migrationBuilder.DropColumn(name: "ServiceName", table: "ScheduledAppointments");
 
             migrationBuilder.AlterColumn<string>(
                 name: "ServiceName",
@@ -41,7 +41,8 @@ namespace kimmy_esthi_backend.Migrations
                 defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "TEXT",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
     }
 }

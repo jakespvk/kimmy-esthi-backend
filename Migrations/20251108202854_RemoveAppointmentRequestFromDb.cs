@@ -11,8 +11,7 @@ namespace kimmy_esthi_backend.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AppointmentRequest");
+            migrationBuilder.DropTable(name: "AppointmentRequest");
         }
 
         /// <inheritdoc />
@@ -23,7 +22,10 @@ namespace kimmy_esthi_backend.Migrations
                 columns: table => new
                 {
                     AppointmentId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ScheduledAppointmentAppointmentId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    ScheduledAppointmentAppointmentId = table.Column<Guid>(
+                        type: "TEXT",
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
@@ -33,13 +35,16 @@ namespace kimmy_esthi_backend.Migrations
                         column: x => x.ScheduledAppointmentAppointmentId,
                         principalTable: "ScheduledAppointments",
                         principalColumn: "AppointmentId",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentRequest_ScheduledAppointmentAppointmentId",
                 table: "AppointmentRequest",
-                column: "ScheduledAppointmentAppointmentId");
+                column: "ScheduledAppointmentAppointmentId"
+            );
         }
     }
 }

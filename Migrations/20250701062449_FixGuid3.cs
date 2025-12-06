@@ -17,7 +17,8 @@ namespace kimmy_esthi_backend.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(byte[]),
-                oldType: "BLOB");
+                oldType: "BLOB"
+            );
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
@@ -25,7 +26,8 @@ namespace kimmy_esthi_backend.Migrations
                 type: "TEXT",
                 nullable: false,
                 oldClrType: typeof(byte[]),
-                oldType: "BLOB");
+                oldType: "BLOB"
+            );
         }
 
         /// <inheritdoc />
@@ -37,7 +39,8 @@ namespace kimmy_esthi_backend.Migrations
                 type: "BLOB",
                 nullable: false,
                 oldClrType: typeof(Guid),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
 
             migrationBuilder.AlterColumn<byte[]>(
                 name: "Id",
@@ -45,7 +48,8 @@ namespace kimmy_esthi_backend.Migrations
                 type: "BLOB",
                 nullable: false,
                 oldClrType: typeof(Guid),
-                oldType: "TEXT");
+                oldType: "TEXT"
+            );
         }
     }
 }

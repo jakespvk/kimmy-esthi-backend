@@ -15,32 +15,32 @@ namespace kimmy_esthi_backend.Migrations
                 table: "Appointments",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.CreateTable(
                 name: "AdminUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: false)
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AdminUsers", x => x.Id);
-                });
+                }
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AdminUsers");
+            migrationBuilder.DropTable(name: "AdminUsers");
 
-            migrationBuilder.DropColumn(
-                name: "ServiceName",
-                table: "Appointments");
+            migrationBuilder.DropColumn(name: "ServiceName", table: "Appointments");
         }
     }
 }

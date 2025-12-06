@@ -13,37 +13,45 @@ namespace kimmy_esthi_backend.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Appointments_ScheduledAppointment_ScheduledAppointmentAppointmentId",
-                table: "Appointments");
+                table: "Appointments"
+            );
 
             migrationBuilder.DropIndex(
                 name: "IX_Appointments_ScheduledAppointmentAppointmentId",
-                table: "Appointments");
+                table: "Appointments"
+            );
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ScheduledAppointment",
-                table: "ScheduledAppointment");
+                table: "ScheduledAppointment"
+            );
 
             migrationBuilder.DropColumn(
                 name: "ScheduledAppointmentAppointmentId",
-                table: "Appointments");
+                table: "Appointments"
+            );
 
             migrationBuilder.RenameTable(
                 name: "ScheduledAppointment",
-                newName: "ScheduledAppointments");
+                newName: "ScheduledAppointments"
+            );
 
-            migrationBuilder.AlterColumn<Guid>(
-                name: "Id",
-                table: "Appointments",
-                type: "TEXT",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "INTEGER")
+            migrationBuilder
+                .AlterColumn<Guid>(
+                    name: "Id",
+                    table: "Appointments",
+                    type: "TEXT",
+                    nullable: false,
+                    oldClrType: typeof(int),
+                    oldType: "INTEGER"
+                )
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ScheduledAppointments",
                 table: "ScheduledAppointments",
-                column: "AppointmentId");
+                column: "AppointmentId"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ScheduledAppointments_Appointments_AppointmentId",
@@ -51,7 +59,8 @@ namespace kimmy_esthi_backend.Migrations
                 column: "AppointmentId",
                 principalTable: "Appointments",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
@@ -59,47 +68,56 @@ namespace kimmy_esthi_backend.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_ScheduledAppointments_Appointments_AppointmentId",
-                table: "ScheduledAppointments");
+                table: "ScheduledAppointments"
+            );
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ScheduledAppointments",
-                table: "ScheduledAppointments");
+                table: "ScheduledAppointments"
+            );
 
             migrationBuilder.RenameTable(
                 name: "ScheduledAppointments",
-                newName: "ScheduledAppointment");
+                newName: "ScheduledAppointment"
+            );
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "Appointments",
-                type: "INTEGER",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "TEXT")
+            migrationBuilder
+                .AlterColumn<int>(
+                    name: "Id",
+                    table: "Appointments",
+                    type: "INTEGER",
+                    nullable: false,
+                    oldClrType: typeof(Guid),
+                    oldType: "TEXT"
+                )
                 .Annotation("Sqlite:Autoincrement", true);
 
             migrationBuilder.AddColumn<Guid>(
                 name: "ScheduledAppointmentAppointmentId",
                 table: "Appointments",
                 type: "TEXT",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ScheduledAppointment",
                 table: "ScheduledAppointment",
-                column: "AppointmentId");
+                column: "AppointmentId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_ScheduledAppointmentAppointmentId",
                 table: "Appointments",
-                column: "ScheduledAppointmentAppointmentId");
+                column: "ScheduledAppointmentAppointmentId"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Appointments_ScheduledAppointment_ScheduledAppointmentAppointmentId",
                 table: "Appointments",
                 column: "ScheduledAppointmentAppointmentId",
                 principalTable: "ScheduledAppointment",
-                principalColumn: "AppointmentId");
+                principalColumn: "AppointmentId"
+            );
         }
     }
 }

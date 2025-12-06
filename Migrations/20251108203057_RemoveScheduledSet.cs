@@ -12,20 +12,24 @@ namespace kimmy_esthi_backend.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_ScheduledAppointments_Appointments_AppointmentId",
-                table: "ScheduledAppointments");
+                table: "ScheduledAppointments"
+            );
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ScheduledAppointments",
-                table: "ScheduledAppointments");
+                table: "ScheduledAppointments"
+            );
 
             migrationBuilder.RenameTable(
                 name: "ScheduledAppointments",
-                newName: "ScheduledAppointment");
+                newName: "ScheduledAppointment"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ScheduledAppointment",
                 table: "ScheduledAppointment",
-                column: "AppointmentId");
+                column: "AppointmentId"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ScheduledAppointment_Appointments_AppointmentId",
@@ -33,7 +37,8 @@ namespace kimmy_esthi_backend.Migrations
                 column: "AppointmentId",
                 principalTable: "Appointments",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
@@ -41,20 +46,24 @@ namespace kimmy_esthi_backend.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_ScheduledAppointment_Appointments_AppointmentId",
-                table: "ScheduledAppointment");
+                table: "ScheduledAppointment"
+            );
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ScheduledAppointment",
-                table: "ScheduledAppointment");
+                table: "ScheduledAppointment"
+            );
 
             migrationBuilder.RenameTable(
                 name: "ScheduledAppointment",
-                newName: "ScheduledAppointments");
+                newName: "ScheduledAppointments"
+            );
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ScheduledAppointments",
                 table: "ScheduledAppointments",
-                column: "AppointmentId");
+                column: "AppointmentId"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ScheduledAppointments_Appointments_AppointmentId",
@@ -62,7 +71,8 @@ namespace kimmy_esthi_backend.Migrations
                 column: "AppointmentId",
                 principalTable: "Appointments",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
     }
 }

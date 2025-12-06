@@ -7,10 +7,12 @@ public class Appointment
 
     public override string ToString()
     {
-        return "ID: " + Id.ToString()
-            + "DateTime: " + DateTime.ToString()
-            + "AppointmentStatus: " + Status.ToString()
+        return "ID: "
+            + Id.ToString()
+            + "DateTime: "
+            + DateTime.ToString()
+            + "AppointmentStatus: "
+            + Status.ToString()
             + ScheduledAppointment?.ToString();
     }
 }
-

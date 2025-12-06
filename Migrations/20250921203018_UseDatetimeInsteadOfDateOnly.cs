@@ -11,30 +11,23 @@ namespace kimmy_esthi_backend.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Date",
-                table: "Appointments");
+            migrationBuilder.DropColumn(name: "Date", table: "Appointments");
 
-            migrationBuilder.RenameColumn(
-                name: "Time",
-                table: "Appointments",
-                newName: "DateTime");
+            migrationBuilder.RenameColumn(name: "Time", table: "Appointments", newName: "DateTime");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "DateTime",
-                table: "Appointments",
-                newName: "Time");
+            migrationBuilder.RenameColumn(name: "DateTime", table: "Appointments", newName: "Time");
 
             migrationBuilder.AddColumn<DateOnly>(
                 name: "Date",
                 table: "Appointments",
                 type: "TEXT",
                 nullable: false,
-                defaultValue: new DateOnly(1, 1, 1));
+                defaultValue: new DateOnly(1, 1, 1)
+            );
         }
     }
 }

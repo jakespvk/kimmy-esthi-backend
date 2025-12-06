@@ -10,9 +10,7 @@ namespace kimmy_esthi_backend.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ServiceName",
-                table: "Appointments");
+            migrationBuilder.DropColumn(name: "ServiceName", table: "Appointments");
         }
 
         /// <inheritdoc />
@@ -22,7 +20,8 @@ namespace kimmy_esthi_backend.Migrations
                 name: "ServiceName",
                 table: "Appointments",
                 type: "TEXT",
-                nullable: true);
+                nullable: true
+            );
         }
     }
 }
