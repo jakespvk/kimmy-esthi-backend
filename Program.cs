@@ -166,14 +166,22 @@ admin.MapPost(
 
 admin.MapGet(
     "/{token}/appointments",
-    async ([FromQuery] bool booked, [FromQuery] DateTime? date, string token, AppointmentDb db) =>
+    async ([FromQuery] bool booked, [FromQuery] bool includeArchived, [FromQuery] DateTime? date, string token, AppointmentDb db) =>
     {
         if (!await db.AdminUsers.AnyAsync(x => x.Token == token))
         {
             Results.Challenge();
             return null;
         }
-        if (booked && (date is not null))
+        if (booked && includeArchived)
+        {
+            return await db
+                .Appointments.Where(x => x.Status == AppointmentStatus.Booked)
+                .Include(x => x.ScheduledAppointment)
+                .OrderBy(x => x.DateTime)
+                .ToListAsync();
+        }
+        else if (booked && (date is not null))
         {
             return await db
                 .Appointments.Where(x =>
@@ -186,7 +194,15 @@ admin.MapGet(
         else if (booked)
         {
             return await db
-                .Appointments.Where(x => x.Status == AppointmentStatus.Booked)
+                .Appointments.Where(x => x.Status == AppointmentStatus.Booked && x.DateTime >= DateTime.Now.AddDays(-1))
+                .Include(x => x.ScheduledAppointment)
+                .OrderBy(x => x.DateTime)
+                .ToListAsync();
+        }
+        else if (includeArchived)
+        {
+            return await db
+                .Appointments
                 .Include(x => x.ScheduledAppointment)
                 .OrderBy(x => x.DateTime)
                 .ToListAsync();
@@ -201,9 +217,10 @@ admin.MapGet(
         }
 
         return await db
-            .Appointments.Include(x => x.ScheduledAppointment)
-            .OrderBy(x => x.DateTime)
-            .ToListAsync();
+            .Appointments.Where(x => x.DateTime > DateTime.Now.AddDays(-1))
+                .Include(x => x.ScheduledAppointment)
+                .OrderBy(x => x.DateTime)
+                .ToListAsync();
     }
 );
 
