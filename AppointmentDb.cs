@@ -19,6 +19,8 @@ public class AppointmentDb : DbContext
             .WithOne()
             .HasForeignKey<ScheduledAppointment>(sa => sa.AppointmentId);
 
+        modelBuilder.Ignore<AppointmentRequest>();
+
         base.OnModelCreating(modelBuilder);
     }
 }
