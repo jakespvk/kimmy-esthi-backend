@@ -11,6 +11,8 @@ public class AppointmentDb : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Ignore<AppointmentRequest>();
+
         modelBuilder.Entity<ScheduledAppointment>().HasKey(sa => sa.AppointmentId);
 
         modelBuilder
@@ -18,8 +20,6 @@ public class AppointmentDb : DbContext
             .HasOne(a => a.ScheduledAppointment)
             .WithOne()
             .HasForeignKey<ScheduledAppointment>(sa => sa.AppointmentId);
-
-        modelBuilder.Ignore<AppointmentRequest>();
 
         base.OnModelCreating(modelBuilder);
     }
