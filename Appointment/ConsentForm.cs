@@ -1,5 +1,7 @@
 using System;
 
+namespace KimmyEsthi.Appointment;
+
 public record ConsentForm
 {
     public Guid Id { get; set; }

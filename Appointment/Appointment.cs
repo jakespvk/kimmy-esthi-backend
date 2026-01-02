@@ -1,3 +1,5 @@
+namespace KimmyEsthi.Appointment;
+
 public class Appointment
 {
     public System.Guid Id { get; set; }

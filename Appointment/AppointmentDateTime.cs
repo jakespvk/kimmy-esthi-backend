@@ -1,6 +1,6 @@
 using System;
 
-namespace kimmy_esthi_backend;
+namespace KimmyEsthi.Appointment;
 
 public class AppointmentDateTime
 {

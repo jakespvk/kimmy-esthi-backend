@@ -1,12 +1,15 @@
-using kimmy_esthi_backend;
+using KimmyEsthi.Admin;
+using KimmyEsthi.Appointment;
 using Microsoft.EntityFrameworkCore;
 
-public class AppointmentDb : DbContext
+namespace KimmyEsthi.Db;
+
+public class KimmyEsthiDbContext : DbContext
 {
-    public AppointmentDb(DbContextOptions<AppointmentDb> options)
+    public KimmyEsthiDbContext(DbContextOptions<KimmyEsthiDbContext> options)
         : base(options) { }
 
-    public DbSet<Appointment> Appointments => Set<Appointment>();
+    public DbSet<Appointment.Appointment> Appointments => Set<Appointment.Appointment>();
     public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,7 +19,7 @@ public class AppointmentDb : DbContext
         modelBuilder.Entity<ScheduledAppointment>().HasKey(sa => sa.AppointmentId);
 
         modelBuilder
-            .Entity<Appointment>()
+            .Entity<Appointment.Appointment>()
             .HasOne(a => a.ScheduledAppointment)
             .WithOne()
             .HasForeignKey<ScheduledAppointment>(sa => sa.AppointmentId);

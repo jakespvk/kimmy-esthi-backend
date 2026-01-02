@@ -1,3 +1,5 @@
+namespace KimmyEsthi.Admin;
+
 public struct LoginRequest
 {
     public string Username { get; set; }

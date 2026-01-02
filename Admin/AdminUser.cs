@@ -1,4 +1,4 @@
-namespace kimmy_esthi_backend;
+namespace KimmyEsthi.Admin;
 
 public class AdminUser
 {
