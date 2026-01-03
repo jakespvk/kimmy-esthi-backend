@@ -1,4 +1,5 @@
 using System;
+using KimmyEsthi.ConsentForm;
 
 namespace KimmyEsthi.Appointment;
 
@@ -8,7 +9,7 @@ public class Appointment
     public DateTime DateTime { get; set; }
     public AppointmentStatus Status { get; set; }
     public ScheduledAppointment? ScheduledAppointment { get; set; }
-    public ConsentForm? ConsentForm { get; set; }
+    public ConsentForm.ConsentForm? ConsentForm { get; set; }
 
     public override string ToString()
     {

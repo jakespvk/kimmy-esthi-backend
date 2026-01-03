@@ -3,6 +3,7 @@ using System;
 using KimmyEsthi.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(KimmyEsthiDbContext))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20260103065142_Add Clients, Update existing models")]
+    partial class AddClientsUpdateexistingmodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -69,6 +72,9 @@ namespace kimmy_esthi_backend.Migrations
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -78,6 +84,8 @@ namespace kimmy_esthi_backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("AppointmentId");
+
+                    b.HasIndex("ClientId");
 
                     b.ToTable("ScheduledAppointment");
                 });
@@ -158,15 +166,15 @@ namespace kimmy_esthi_backend.Migrations
 
             modelBuilder.Entity("KimmyEsthi.Appointment.ScheduledAppointment", b =>
                 {
-                    b.HasOne("KimmyEsthi.Client.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("KimmyEsthi.Appointment.Appointment", null)
                         .WithOne("ScheduledAppointment")
                         .HasForeignKey("KimmyEsthi.Appointment.ScheduledAppointment", "AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KimmyEsthi.Client.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

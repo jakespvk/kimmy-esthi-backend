@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using KimmyEsthi.Appointment;
+using KimmyEsthi.Client;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -85,9 +86,12 @@ public static class AppointmentEndpoints
                 appointmentToUpdate.ScheduledAppointment = new ScheduledAppointment
                 {
                     ServiceName = appointmentRequest.ScheduledAppointment.ServiceName,
-                    PreferredName = appointmentRequest.ScheduledAppointment.PreferredName,
-                    Email = appointmentRequest.ScheduledAppointment.Email,
-                    PhoneNumber = appointmentRequest.ScheduledAppointment.PhoneNumber,
+                    Client = new Client
+                    {
+                        PreferredName = appointmentRequest.ScheduledAppointment.Client.PreferredName,
+                        Email = appointmentRequest.ScheduledAppointment.Client.Email,
+                        PhoneNumber = appointmentRequest.ScheduledAppointment.Client.PhoneNumber,
+                    },
                     SkinConcerns = appointmentRequest.ScheduledAppointment.SkinConcerns,
                 };
                 appointmentToUpdate.Status = AppointmentStatus.Booked;
@@ -96,16 +100,16 @@ public static class AppointmentEndpoints
             }
         );
 
-        app.MapPost("/consentForm", async ([FromBody] ConsentForm consentForm, KimmyEsthiDbContext db) =>
-        {
-            var appt = await db.Appointments.FindAsync(consentForm.AppointmentId);
-            if (appt is not Appointment)
-            {
-                return Results.NotFound();
-            }
-            appt.ConsentForm = consentForm;
-            await db.SaveChangesAsync();
-            return Results.Ok();
-        });
+        // app.MapPost("/consentForm", async ([FromBody] ConsentForm consentForm, KimmyEsthiDbContext db) =>
+        // {
+        //     var appt = await db.Appointments.FindAsync(consentForm.AppointmentId);
+        //     if (appt is not Appointment)
+        //     {
+        //         return Results.NotFound();
+        //     }
+        //     appt.ConsentForm = consentForm;
+        //     await db.SaveChangesAsync();
+        //     return Results.Ok();
+        // });
     }
 }

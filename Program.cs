@@ -27,4 +27,8 @@ var admin = app.MapGroup("admin");
 
 admin.MapAdminEndpoints();
 
+var consentForm = app.MapGroup("consentForm");
+
+consentForm.MapConsentFormEndpoints();
+
 app.Run();
