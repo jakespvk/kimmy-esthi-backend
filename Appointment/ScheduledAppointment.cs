@@ -1,8 +1,10 @@
+using System;
+
 namespace KimmyEsthi.Appointment;
 
 public class ScheduledAppointment
 {
-    public System.Guid AppointmentId { get; set; }
+    public Guid AppointmentId { get; set; }
     public required string ServiceName { get; set; }
     public required string PreferredName { get; set; }
     public required string Email { get; set; }

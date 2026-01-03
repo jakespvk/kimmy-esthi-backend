@@ -1,9 +1,11 @@
+using System;
+
 namespace KimmyEsthi.Appointment;
 
 public class Appointment
 {
-    public System.Guid Id { get; set; }
-    public System.DateTime DateTime { get; set; }
+    public Guid Id { get; set; }
+    public DateTime DateTime { get; set; }
     public AppointmentStatus Status { get; set; }
     public ScheduledAppointment? ScheduledAppointment { get; set; }
     public ConsentForm? ConsentForm { get; set; }

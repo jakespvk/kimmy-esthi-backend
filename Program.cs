@@ -24,6 +24,7 @@ app.UseCors(MyAllowSpecificOrigins);
 app.MapAppointmentEndpoints();
 
 var admin = app.MapGroup("admin");
+
 admin.MapAdminEndpoints();
 
 app.Run();
