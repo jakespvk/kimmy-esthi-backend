@@ -1,5 +1,4 @@
 using System;
-using KimmyEsthi.ConsentForm;
 
 namespace KimmyEsthi.Appointment;
 

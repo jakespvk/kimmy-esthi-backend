@@ -88,6 +88,7 @@ public static class AppointmentEndpoints
                     ServiceName = appointmentRequest.ScheduledAppointment.ServiceName,
                     Client = new Client
                     {
+                        AppointmentId = appointmentRequest.AppointmentId,
                         PreferredName = appointmentRequest.ScheduledAppointment.Client.PreferredName,
                         Email = appointmentRequest.ScheduledAppointment.Client.Email,
                         PhoneNumber = appointmentRequest.ScheduledAppointment.Client.PhoneNumber,
