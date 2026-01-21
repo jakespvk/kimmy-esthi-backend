@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using KimmyEsthi.Appointment;
 using KimmyEsthi.Client;
+using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ public static class AppointmentEndpoints
             "/appointments/{date}",
             async (DateTime date, KimmyEsthiDbContext db) =>
             {
-                return await db.Appointments.Where(x => x.DateTime.Date == date.Date).OrderBy(x => x.DateTime).ToListAsync();
+                return await db.Appointments.Where(x => x.Promotion == null && x.DateTime.Date == date.Date).OrderBy(x => x.DateTime).ToListAsync();
             }
         );
 
@@ -29,7 +30,7 @@ public static class AppointmentEndpoints
                 var availableAndBookedDatesList = new List<AppointmentDateAndStatus>();
                 var datesList = await db
                     // INCLUDE TODAY OR NO??
-                    .Appointments.Where(x => x.DateTime >= DateTime.Today)
+                    .Appointments.Where(x => x.Promotion == null && x.DateTime >= DateTime.Today)
                     .ToListAsync();
                 foreach (var date in datesList)
                 {
@@ -73,6 +74,7 @@ public static class AppointmentEndpoints
             {
                 var appointmentToUpdate = await db
                     .Appointments.Include(a => a.ScheduledAppointment)
+                    .Include(a => a.Promotion)
                     .Where(x => x.Id == appointmentRequest.AppointmentId)
                     .FirstOrDefaultAsync();
                 if (appointmentToUpdate is null)
@@ -95,6 +97,13 @@ public static class AppointmentEndpoints
                     },
                     SkinConcerns = appointmentRequest.ScheduledAppointment.SkinConcerns,
                 };
+                if (appointmentRequest.Promotion != null && !string.IsNullOrEmpty(appointmentRequest.Promotion.Name))
+                {
+                    appointmentToUpdate.Promotion = new Promotion
+                    {
+                        Name = appointmentRequest.Promotion.Name,
+                    };
+                }
                 appointmentToUpdate.Status = AppointmentStatus.Booked;
                 await db.SaveChangesAsync();
                 return Results.Ok("Appointment request sent!");
@@ -104,7 +113,7 @@ public static class AppointmentEndpoints
         // app.MapPost("/consentForm", async ([FromBody] ConsentForm consentForm, KimmyEsthiDbContext db) =>
         // {
         //     var appt = await db.Appointments.FindAsync(consentForm.AppointmentId);
-        //     if (appt is not Appointment)
+        //     if (appt is null)
         //     {
         //         return Results.NotFound();
         //     }

@@ -9,6 +9,7 @@ public class Appointment
     public AppointmentStatus Status { get; set; }
     public ScheduledAppointment? ScheduledAppointment { get; set; }
     public ConsentForm.ConsentForm? ConsentForm { get; set; }
+    public Promotion? Promotion { get; set; }
 
     public override string ToString()
     {

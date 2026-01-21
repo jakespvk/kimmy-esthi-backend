@@ -3,6 +3,7 @@ using System;
 using KimmyEsthi.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(KimmyEsthiDbContext))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20260120211705_AddPromotions2")]
+    partial class AddPromotions2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -45,6 +48,9 @@ namespace kimmy_esthi_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("ConsentFormId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
@@ -52,6 +58,8 @@ namespace kimmy_esthi_backend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConsentFormId");
 
                     b.HasIndex("DateTime")
                         .IsUnique();
@@ -85,9 +93,6 @@ namespace kimmy_esthi_backend.Migrations
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -97,8 +102,6 @@ namespace kimmy_esthi_backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("AppointmentId");
-
-                    b.HasIndex("ClientId");
 
                     b.ToTable("ScheduledAppointment");
                 });
@@ -141,9 +144,6 @@ namespace kimmy_esthi_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("AppointmentId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("ClientId")
                         .HasColumnType("TEXT");
 
@@ -165,13 +165,19 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentId")
-                        .IsUnique();
-
                     b.HasIndex("ClientId")
                         .IsUnique();
 
                     b.ToTable("ConsentForm");
+                });
+
+            modelBuilder.Entity("KimmyEsthi.Appointment.Appointment", b =>
+                {
+                    b.HasOne("KimmyEsthi.ConsentForm.ConsentForm", "ConsentForm")
+                        .WithMany()
+                        .HasForeignKey("ConsentFormId");
+
+                    b.Navigation("ConsentForm");
                 });
 
             modelBuilder.Entity("KimmyEsthi.Appointment.Promotion", b =>
@@ -185,15 +191,15 @@ namespace kimmy_esthi_backend.Migrations
 
             modelBuilder.Entity("KimmyEsthi.Appointment.ScheduledAppointment", b =>
                 {
-                    b.HasOne("KimmyEsthi.Appointment.Appointment", null)
-                        .WithOne("ScheduledAppointment")
-                        .HasForeignKey("KimmyEsthi.Appointment.ScheduledAppointment", "AppointmentId")
+                    b.HasOne("KimmyEsthi.Client.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KimmyEsthi.Client.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
+                    b.HasOne("KimmyEsthi.Appointment.Appointment", null)
+                        .WithOne("ScheduledAppointment")
+                        .HasForeignKey("KimmyEsthi.Appointment.ScheduledAppointment", "AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -202,12 +208,6 @@ namespace kimmy_esthi_backend.Migrations
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.ConsentForm", b =>
                 {
-                    b.HasOne("KimmyEsthi.Appointment.Appointment", null)
-                        .WithOne("ConsentForm")
-                        .HasForeignKey("KimmyEsthi.ConsentForm.ConsentForm", "AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("KimmyEsthi.Client.Client", null)
                         .WithOne("ConsentForm")
                         .HasForeignKey("KimmyEsthi.ConsentForm.ConsentForm", "ClientId")
@@ -217,8 +217,6 @@ namespace kimmy_esthi_backend.Migrations
 
             modelBuilder.Entity("KimmyEsthi.Appointment.Appointment", b =>
                 {
-                    b.Navigation("ConsentForm");
-
                     b.Navigation("Promotion");
 
                     b.Navigation("ScheduledAppointment");

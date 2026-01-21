@@ -5,6 +5,7 @@ namespace KimmyEsthi.Appointment;
 public class ScheduledAppointment
 {
     public Guid AppointmentId { get; set; }
+    public Guid ClientId { get; set; }
     public required string ServiceName { get; set; }
     public required Client.Client Client { get; set; }
     public required string SkinConcerns { get; set; }

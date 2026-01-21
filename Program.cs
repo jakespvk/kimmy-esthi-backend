@@ -22,6 +22,7 @@ var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.MapAppointmentEndpoints();
+app.MapPromotionAppointmentEndpoints();
 
 var admin = app.MapGroup("admin");
 

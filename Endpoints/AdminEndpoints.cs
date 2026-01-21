@@ -133,6 +133,26 @@ public static class AdminEndpoints
             }
         );
 
+        admin.MapPost("{token}/appointments/promotion",
+                async ([FromBody] Appointment[] appointments, string token, KimmyEsthiDbContext db) =>
+                {
+                    if (!await db.AdminUsers.AnyAsync(x => x.Token == token))
+                    {
+                        Results.Challenge();
+                        return null;
+                    }
+                    foreach (var appointment in appointments)
+                    {
+                        if (await db.Appointments.AnyAsync(x => x.DateTime == appointment.DateTime))
+                            return Results.BadRequest("Already an appointment at that time!");
+                        if (appointment.Promotion == null)
+                            return Results.BadRequest("Promotion must be specified for this endpoint!");
+                        await db.Appointments.AddAsync(appointment);
+                    }
+                    await db.SaveChangesAsync();
+                    return Results.Accepted("Appointment created for promotion");
+                });
+
         // admin.MapPost("/secret", async (KimmyEsthiDbContext db) =>
         //         {
         //             await db.AdminUsers.AddAsync(new AdminUser { Username = "kimmxthy", Password = "KakeKakeKake4eva" });
