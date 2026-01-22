@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PromotionAppointmentEndpoints
 {
-    public static void MapPromotionAppointmentEndpoints(this IEndpointRouteBuilder app)
+    public static void Map(WebApplication app)
     {
         app.MapGet("/promotions", async (KimmyEsthiDbContext db) =>
                 {

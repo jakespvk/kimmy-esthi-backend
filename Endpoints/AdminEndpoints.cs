@@ -11,8 +11,10 @@ using Microsoft.EntityFrameworkCore;
 
 public static class AdminEndpoints
 {
-    public static void MapAdminEndpoints(this IEndpointRouteBuilder admin)
+    public static void Map(WebApplication app)
     {
+        var admin = app.MapGroup("admin");
+
         admin.MapPost(
             "/",
             async ([FromBody] LoginRequest loginRequest, KimmyEsthiDbContext db) =>
@@ -23,7 +25,7 @@ public static class AdminEndpoints
                         .AdminUsers.Where(x => x.Username == loginRequest.Username)
                         .FirstOrDefaultAsync();
 
-                    if (user is not AdminUser)
+                    if (user is null)
                     {
                         await db.AdminUsers.AddAsync(new AdminUser { Username = "kimmxthy", Password = "KakeKakeKake4eva" });
                         await db.SaveChangesAsync();

@@ -1,4 +1,3 @@
-using KimmyEsthi.Client;
 using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
@@ -8,13 +7,15 @@ using Microsoft.AspNetCore.Routing;
 
 public static class ConsentFormEndpoints
 {
-    public static void MapConsentFormEndpoints(this IEndpointRouteBuilder consentForm)
+    public static void Map(WebApplication app)
     {
+        var consentForm = app.MapGroup("consentForm");
+
         consentForm.MapPost("", async ([FromBody] ConsentForm consentForm, KimmyEsthiDbContext db) =>
         {
             var client = await db.Clients
                 .FindAsync(consentForm.ClientId);
-            if (client is not Client)
+            if (client is null)
             {
                 return Results.NotFound();
             }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using KimmyEsthi.Appointment;
 using KimmyEsthi.Client;
-using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Db;
+using KimmyEsthi.Email;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class AppointmentEndpoints
 {
-    public static void MapAppointmentEndpoints(this IEndpointRouteBuilder app)
+    public static void Map(WebApplication app)
     {
         app.MapGet(
             "/appointments/{date}",
@@ -70,7 +70,7 @@ public static class AppointmentEndpoints
 
         app.MapPost(
             "/appointment",
-            async ([FromBody] AppointmentRequest appointmentRequest, KimmyEsthiDbContext db) =>
+            async ([FromBody] AppointmentRequest appointmentRequest, KimmyEsthiDbContext db, EmailService emailService) =>
             {
                 var appointmentToUpdate = await db
                     .Appointments.Include(a => a.ScheduledAppointment)
@@ -106,7 +106,11 @@ public static class AppointmentEndpoints
                 }
                 appointmentToUpdate.Status = AppointmentStatus.Booked;
                 await db.SaveChangesAsync();
-                return Results.Ok("Appointment request sent!");
+                emailService.SendAppointmentRequestEmail(
+                    appointmentToUpdate.ScheduledAppointment.ClientId,
+                    appointmentToUpdate.Id
+                );
+                return Results.Ok(appointmentToUpdate.ScheduledAppointment.ClientId);
             }
         );
 
