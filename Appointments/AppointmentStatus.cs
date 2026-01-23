@@ -1,4 +1,4 @@
-namespace KimmyEsthi.Appointment;
+namespace KimmyEsthi.Appointments;
 
 public enum AppointmentStatus
 {

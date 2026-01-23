@@ -1,0 +1,131 @@
+{
+  "api": {
+    "base_url": "http://localhost:5000",
+    "timeout": 30
+  },
+  "test_scenarios": {
+    "read_test": {
+      "enabled": true,
+      "concurrent_users": 50,
+      "duration_seconds": 60,
+      "ramp_up_seconds": 10,
+      "endpoints": [
+        {
+          "path": "/appointments/status",
+          "method": "GET",
+          "weight": 40
+        },
+        {
+          "path": "/appointments/2024-01-15",
+          "method": "GET", 
+          "weight": 30
+        },
+        {
+          "path": "/appointments/2024-01-16",
+          "method": "GET",
+          "weight": 30
+        }
+      ]
+    },
+    "write_test": {
+      "enabled": true,
+      "concurrent_users": 20,
+      "duration_seconds": 120,
+      "ramp_up_seconds": 15,
+      "endpoints": [
+        {
+          "path": "/appointment",
+          "method": "POST",
+          "weight": 70
+        },
+        {
+          "path": "/consentForm",
+          "method": "POST", 
+          "weight": 30
+        }
+      ]
+    },
+    "mixed_test": {
+      "enabled": true,
+      "concurrent_users": 100,
+      "duration_seconds": 180,
+      "ramp_up_seconds": 20,
+      "endpoints": [
+        {
+          "path": "/appointments/status",
+          "method": "GET",
+          "weight": 30
+        },
+        {
+          "path": "/appointments/2024-01-15",
+          "method": "GET",
+          "weight": 20
+        },
+        {
+          "path": "/appointment",
+          "method": "POST",
+          "weight": 40
+        },
+        {
+          "path": "/consentForm",
+          "method": "POST",
+          "weight": 10
+        }
+      ]
+    },
+    "admin_test": {
+      "enabled": true,
+      "concurrent_users": 5,
+      "duration_seconds": 60,
+      "ramp_up_seconds": 5,
+      "credentials": {
+        "username": "kimmxthy",
+        "password": "KakeKakeKake4eva"
+      },
+      "endpoints": [
+        {
+          "path": "/admin/{token}/appointments",
+          "method": "GET",
+          "weight": 60
+        },
+        {
+          "path": "/admin/{token}/appointments?booked=true",
+          "method": "GET",
+          "weight": 40
+        }
+      ]
+    }
+  },
+  "reporting": {
+    "output_file": "stress_test_results.json",
+    "real_time_display": true,
+    "detailed_logs": false
+  },
+  "test_data": {
+    "appointment_date_range": {
+      "start_date": "2024-01-15",
+      "end_date": "2024-12-31"
+    },
+    "services": [
+      "realtor",
+      "daydream", 
+      "sunset-reset",
+      "acne-afterglow",
+      "radiance-revival",
+      "glow-getter-package",
+      "self-care-series",
+      "ultimate-radiance-retreat",
+      "clear-horizon-package"
+    ],
+    "skin_concerns": [
+      "Acne",
+      "Aging",
+      "Dryness",
+      "Oiliness", 
+      "Hyperpigmentation",
+      "Sensitivity",
+      "Fine Lines",
+      "Uneven Texture"
+    ]
+  }
+}

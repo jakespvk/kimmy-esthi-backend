@@ -3,6 +3,7 @@ using System;
 using KimmyEsthi.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace kimmy_esthi_backend.Migrations
 {
     [DbContext(typeof(KimmyEsthiDbContext))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20260123043329_Services")]
+    partial class Services
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -210,9 +213,8 @@ namespace kimmy_esthi_backend.Migrations
                     b.Property<string>("PromotionName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ServiceCardType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ServiceCardType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()

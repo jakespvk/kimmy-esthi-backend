@@ -1,6 +1,6 @@
 using System;
 
-namespace KimmyEsthi.Appointment;
+namespace KimmyEsthi.Appointments;
 
 public sealed class AppointmentDateAndStatus
 {

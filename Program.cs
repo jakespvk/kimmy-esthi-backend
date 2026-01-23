@@ -1,8 +1,13 @@
+// using System.Text.Json.Serialization;
+using DotNetEnv;
 using KimmyEsthi.Db;
 using KimmyEsthi.Email;
+using KimmyEsthi.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
+Env.Load();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -18,6 +23,12 @@ builder.Services.AddCors(options =>
     );
 });
 builder.Services.AddScoped<EmailService>();
+// builder.Services.AddControllers()
+//     .AddJsonOptions(options =>
+//     {
+//         options.JsonSerializerOptions.Converters.Add(
+//             new JsonStringEnumConverter());
+//     });
 
 var app = builder.Build();
 
@@ -27,5 +38,7 @@ AppointmentEndpoints.Map(app);
 PromotionAppointmentEndpoints.Map(app);
 AdminEndpoints.Map(app);
 ConsentFormEndpoints.Map(app);
+ServicesEndpoints.Map(app);
+TestEmailEndpoint.Map(app);
 
 app.Run();

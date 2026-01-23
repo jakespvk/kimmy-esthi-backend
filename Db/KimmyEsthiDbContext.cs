@@ -1,5 +1,7 @@
+using System;
 using KimmyEsthi.Admin;
-using KimmyEsthi.Appointment;
+using KimmyEsthi.Appointments;
+using KimmyEsthi.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace KimmyEsthi.Db;
@@ -9,14 +11,15 @@ public class KimmyEsthiDbContext : DbContext
     public KimmyEsthiDbContext(DbContextOptions<KimmyEsthiDbContext> options)
         : base(options) { }
 
-    public DbSet<Appointment.Appointment> Appointments => Set<Appointment.Appointment>();
+    public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
     public DbSet<Client.Client> Clients => Set<Client.Client>();
     public DbSet<Promotion> Promotions => Set<Promotion>();
+    public DbSet<Service> Services => Set<Service>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Appointment.Appointment>().HasIndex(a => a.DateTime).IsUnique();
+        modelBuilder.Entity<Appointment>().HasIndex(a => a.DateTime).IsUnique();
         modelBuilder.Ignore<AppointmentRequest>();
 
         modelBuilder.Entity<ScheduledAppointment>().HasKey(sa => sa.AppointmentId);
@@ -25,13 +28,13 @@ public class KimmyEsthiDbContext : DbContext
         modelBuilder.Entity<Client.Client>().HasIndex(c => c.Email).IsUnique();
 
         modelBuilder
-            .Entity<Appointment.Appointment>()
+            .Entity<Appointment>()
             .HasOne(a => a.ScheduledAppointment)
             .WithOne()
             .HasForeignKey<ScheduledAppointment>(sa => sa.AppointmentId);
 
         modelBuilder
-            .Entity<Appointment.Appointment>()
+            .Entity<Appointment>()
             .HasOne(a => a.Promotion)
             .WithOne()
             .HasForeignKey<Promotion>(p => p.AppointmentId);
@@ -47,6 +50,13 @@ public class KimmyEsthiDbContext : DbContext
             .HasOne(x => x.ConsentForm)
             .WithOne()
             .HasForeignKey<ConsentForm.ConsentForm>(x => x.ClientId);
+
+        modelBuilder
+            .Entity<Service>()
+            .Property(e => e.ServiceCardType)
+            .HasConversion(
+                v => v.ToString(),
+                v => (ServiceCardType)Enum.Parse(typeof(ServiceCardType), v));
 
         base.OnModelCreating(modelBuilder);
     }

@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using KimmyEsthi.Admin;
-using KimmyEsthi.Appointment;
+using KimmyEsthi.Appointments;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -53,24 +54,24 @@ public static class AdminEndpoints
                 {
                     return Results.Challenge();
                 }
+                var failedToAddAppointments = new List<string>();
                 foreach (var appt in appointments)
                 {
                     if (appt is null)
                     {
-                        return Results.BadRequest($"appointment: {appt?.DateTime} was empty");
+                        failedToAddAppointments.Add($"Appointment: {appt} is empty");
                     }
                     else if (await db.Appointments.AnyAsync(x => x.DateTime == appt.DateTime))
                     {
-                        return Results.BadRequest(
-                            $"appointment: {appt.DateTime:yyyy-MM-dd HH:mm} already exists"
-                        );
-                    }
-                    else
-                    {
-                        await db.Appointments.AddAsync(appt);
+                        failedToAddAppointments.Add($"Appointment: {appt.DateTime:yyyy-MM-dd HH:mm} already exists");
                     }
                 }
+                await db.AddRangeAsync(appointments);
                 await db.SaveChangesAsync();
+                if (failedToAddAppointments.Count > 0)
+                {
+                    return Results.BadRequest(failedToAddAppointments);
+                }
                 return Results.Ok();
             }
         );

@@ -4,11 +4,13 @@
     <AllowMissingPrunePackageData>true</AllowMissingPrunePackageData>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <RootNamespace>kimmy_esthi_backend</RootNamespace>
+    <RootNamespace>KimmyEsthi</RootNamespace>
     <UserSecretsId>4a5a783a-260c-4e16-a507-16b29b559804</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+    <PackageReference Include="MailKit" Version="4.14.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.2" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">

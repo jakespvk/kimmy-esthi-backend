@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using KimmyEsthi.Appointment;
+using KimmyEsthi.Appointments;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

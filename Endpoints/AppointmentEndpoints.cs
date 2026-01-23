@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using KimmyEsthi.Appointment;
+using KimmyEsthi.Appointments;
 using KimmyEsthi.Client;
 using KimmyEsthi.Db;
 using KimmyEsthi.Email;
@@ -85,10 +85,11 @@ public static class AppointmentEndpoints
                 {
                     return Results.BadRequest();
                 }
+                var client = await db.Clients.FindAsync(appointmentRequest.ScheduledAppointment.Client.Email);
                 appointmentToUpdate.ScheduledAppointment = new ScheduledAppointment
                 {
                     ServiceName = appointmentRequest.ScheduledAppointment.ServiceName,
-                    Client = new Client
+                    Client = client ?? new Client
                     {
                         AppointmentId = appointmentRequest.AppointmentId,
                         PreferredName = appointmentRequest.ScheduledAppointment.Client.PreferredName,
@@ -97,7 +98,11 @@ public static class AppointmentEndpoints
                     },
                     SkinConcerns = appointmentRequest.ScheduledAppointment.SkinConcerns,
                 };
-                if (appointmentRequest.Promotion != null && !string.IsNullOrEmpty(appointmentRequest.Promotion.Name))
+                if (appointmentRequest.Promotion != null && appointmentRequest.Promotion.Id != Guid.Empty)
+                {
+                    appointmentToUpdate.Promotion = await db.Promotions.FindAsync(appointmentRequest.Promotion.Id);
+                }
+                else if (appointmentRequest.Promotion != null && !string.IsNullOrEmpty(appointmentRequest.Promotion.Name))
                 {
                     appointmentToUpdate.Promotion = new Promotion
                     {
@@ -106,10 +111,11 @@ public static class AppointmentEndpoints
                 }
                 appointmentToUpdate.Status = AppointmentStatus.Booked;
                 await db.SaveChangesAsync();
-                emailService.SendAppointmentRequestEmail(
-                    appointmentToUpdate.ScheduledAppointment.ClientId,
-                    appointmentToUpdate.Id
-                );
+                await emailService.SendAppointmentRequestEmail(
+                                    appointmentToUpdate.ScheduledAppointment.ClientId,
+                                    appointmentToUpdate.Id,
+                                    appointmentToUpdate.ScheduledAppointment.Client.Email
+                                );
                 return Results.Ok(appointmentToUpdate.ScheduledAppointment.ClientId);
             }
         );
