@@ -1,6 +1,7 @@
 using System;
 using KimmyEsthi.Admin;
 using KimmyEsthi.Appointments;
+using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ public class KimmyEsthiDbContext : DbContext
     public DbSet<Client.Client> Clients => Set<Client.Client>();
     public DbSet<Promotion> Promotions => Set<Promotion>();
     public DbSet<Service> Services => Set<Service>();
+    public DbSet<ConsentFormStatement> ConsentFormStatements => Set<ConsentFormStatement>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
