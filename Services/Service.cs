@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace KimmyEsthi.Services;
 
 public class Service
@@ -5,7 +7,8 @@ public class Service
     public int Id { get; set; }
     public required string ServiceName { get; set; }
     public string? PromotionName { get; set; }
-    public ServiceCardType ServiceCardType { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ServiceType ServiceType { get; set; }
     public required string CardTitle { get; set; }
     public required string CardContent { get; set; }
     public required string CardImgSrc { get; set; }
@@ -17,7 +20,7 @@ public class Service
     public bool IsActive { get; set; } = true;
 }
 
-public enum ServiceCardType
+public enum ServiceType
 {
     Facial,
     Package,

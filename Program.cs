@@ -1,4 +1,3 @@
-// using System.Text.Json.Serialization;
 using DotNetEnv;
 using KimmyEsthi.Db;
 using KimmyEsthi.Email;
@@ -23,12 +22,6 @@ builder.Services.AddCors(options =>
     );
 });
 builder.Services.AddScoped<EmailService>();
-// builder.Services.AddControllers()
-//     .AddJsonOptions(options =>
-//     {
-//         options.JsonSerializerOptions.Converters.Add(
-//             new JsonStringEnumConverter());
-//     });
 
 var app = builder.Build();
 

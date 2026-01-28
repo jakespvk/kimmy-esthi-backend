@@ -53,10 +53,10 @@ public class KimmyEsthiDbContext : DbContext
 
         modelBuilder
             .Entity<Service>()
-            .Property(e => e.ServiceCardType)
+            .Property(e => e.ServiceType)
             .HasConversion(
                 v => v.ToString(),
-                v => (ServiceCardType)Enum.Parse(typeof(ServiceCardType), v));
+                v => (ServiceType)Enum.Parse(typeof(ServiceType), v));
 
         base.OnModelCreating(modelBuilder);
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using KimmyEsthi.Db;
 using KimmyEsthi.Services;
@@ -20,10 +19,9 @@ public static class ServicesEndpoints
             return Results.Ok(await db.Services.Where(x => x.IsActive).ToArrayAsync());
         });
 
-        services.MapGet("/search", async ([FromQuery] ServiceCardType serviceCardType, KimmyEsthiDbContext db) =>
+        services.MapGet("/search", async ([FromQuery] ServiceType serviceType, KimmyEsthiDbContext db) =>
         {
-            Console.WriteLine("here...");
-            return Results.Ok(await db.Services.Where(x => x.IsActive && x.ServiceCardType == serviceCardType).ToArrayAsync());
+            return Results.Ok(await db.Services.Where(x => x.IsActive && x.ServiceType == serviceType).ToArrayAsync());
         });
 
         services.MapPost("", async ([FromBody] Service[] newServiceRequests, KimmyEsthiDbContext db) =>
