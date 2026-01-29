@@ -1,4 +1,5 @@
 using System.Linq;
+using KimmyEsthi.Clients;
 using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,11 @@ public static class ConsentFormEndpoints
 
         consentForm.MapGet("/statements", async (KimmyEsthiDbContext db) =>
         {
+            return Results.Ok(await db.ConsentFormStatements.ToArrayAsync());
+        });
+
+        consentForm.MapGet("/statements/active", async (KimmyEsthiDbContext db) =>
+        {
             return Results.Ok(await db.ConsentFormStatements.Where(x => x.IsActive).ToArrayAsync());
         });
 
@@ -24,11 +30,7 @@ public static class ConsentFormEndpoints
                 .FindAsync(consentForm.ClientId);
             if (client is null)
             {
-                client = await db.Clients.Where(x => x.PreferredName == consentForm.PrintedName).FirstAsync();
-                if (client is null)
-                {
-                    return Results.NotFound();
-                }
+                client = new Client { PreferredName = consentForm.PrintedName };
             }
             client.ConsentForm = consentForm;
             return Results.Ok(await db.SaveChangesAsync());

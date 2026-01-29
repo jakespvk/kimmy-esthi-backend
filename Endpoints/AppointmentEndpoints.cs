@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using KimmyEsthi.Appointments;
-using KimmyEsthi.Client;
+using KimmyEsthi.Clients;
 using KimmyEsthi.Db;
 using KimmyEsthi.Email;
 using Microsoft.AspNetCore.Builder;

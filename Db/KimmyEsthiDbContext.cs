@@ -1,6 +1,7 @@
 using System;
 using KimmyEsthi.Admin;
 using KimmyEsthi.Appointments;
+using KimmyEsthi.Clients;
 using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ public class KimmyEsthiDbContext : DbContext
 
     public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<AdminUser> AdminUsers => Set<AdminUser>();
-    public DbSet<Client.Client> Clients => Set<Client.Client>();
+    public DbSet<Client> Clients => Set<Client>();
     public DbSet<Promotion> Promotions => Set<Promotion>();
     public DbSet<Service> Services => Set<Service>();
     public DbSet<ConsentFormStatement> ConsentFormStatements => Set<ConsentFormStatement>();
@@ -26,8 +27,8 @@ public class KimmyEsthiDbContext : DbContext
 
         modelBuilder.Entity<ScheduledAppointment>().HasKey(sa => sa.AppointmentId);
 
-        modelBuilder.Entity<Client.Client>().HasKey(c => c.ClientId);
-        modelBuilder.Entity<Client.Client>().HasIndex(c => c.Email).IsUnique();
+        modelBuilder.Entity<Client>().HasKey(c => c.ClientId);
+        modelBuilder.Entity<Client>().HasIndex(c => c.Email).IsUnique();
 
         modelBuilder
             .Entity<Appointment>()
@@ -48,7 +49,7 @@ public class KimmyEsthiDbContext : DbContext
             .HasForeignKey(x => x.ClientId);
 
         modelBuilder
-            .Entity<Client.Client>()
+            .Entity<Client>()
             .HasOne(x => x.ConsentForm)
             .WithOne()
             .HasForeignKey<ConsentForm.ConsentForm>(x => x.ClientId);

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace KimmyEsthi.Client;
+namespace KimmyEsthi.Clients;
 
 public class Client
 {
