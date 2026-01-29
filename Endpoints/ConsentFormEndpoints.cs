@@ -24,7 +24,11 @@ public static class ConsentFormEndpoints
                 .FindAsync(consentForm.ClientId);
             if (client is null)
             {
-                return Results.NotFound();
+                client = await db.Clients.Where(x => x.PreferredName == consentForm.PrintedName).FirstAsync();
+                if (client is null)
+                {
+                    return Results.NotFound();
+                }
             }
             client.ConsentForm = consentForm;
             return Results.Ok(await db.SaveChangesAsync());

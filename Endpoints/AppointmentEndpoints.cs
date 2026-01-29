@@ -115,7 +115,7 @@ public static class AppointmentEndpoints
                 await emailService.SendAppointmentRequestEmail(
                                     appointmentToUpdate.ScheduledAppointment.ClientId,
                                     appointmentToUpdate.Id,
-                                    appointmentToUpdate.ScheduledAppointment.Client.Email
+                                    appointmentToUpdate.ScheduledAppointment.Client.Email!
                                 );
                 return Results.Ok(appointmentToUpdate.ScheduledAppointment.ClientId);
             }
