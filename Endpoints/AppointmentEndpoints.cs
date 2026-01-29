@@ -111,6 +111,7 @@ public static class AppointmentEndpoints
                 }
                 appointmentToUpdate.Status = AppointmentStatus.Booked;
                 await db.SaveChangesAsync();
+                await emailService.SendNotificationEmail(appointmentToUpdate);
                 await emailService.SendAppointmentRequestEmail(
                                     appointmentToUpdate.ScheduledAppointment.ClientId,
                                     appointmentToUpdate.Id,

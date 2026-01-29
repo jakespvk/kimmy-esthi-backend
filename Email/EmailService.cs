@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using Microsoft.Extensions.Logging;
+using KimmyEsthi.Appointments;
 
 namespace KimmyEsthi.Email;
 
@@ -14,6 +15,28 @@ public class EmailService
     public EmailService(ILogger<EmailService> logger)
     {
         _logger = logger;
+    }
+
+    public async Task<bool> SendNotificationEmail(Appointment appointment)
+    {
+        try
+        {
+            var credentials = GetEmailCredentials();
+
+            var subject = "New Appointment Request";
+            var body = $"""
+                New appointment request submitted:
+
+                ${appointment}
+                """;
+
+            return await SendEmailAsync(credentials.Item1, credentials.Item2, "kimmyancheta.business@gmail.com", subject, body);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send appointment request email");
+            return false;
+        }
     }
 
     public async Task<bool> SendAppointmentRequestEmail(Guid clientId, Guid? appointmentId, string clientEmail)

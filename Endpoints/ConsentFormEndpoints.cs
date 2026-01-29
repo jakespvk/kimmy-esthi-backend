@@ -32,16 +32,22 @@ public static class ConsentFormEndpoints
 
         consentForm.MapPut("/statements", async ([FromBody] ConsentFormStatement statement, KimmyEsthiDbContext db) =>
         {
-            db.ConsentFormStatements.Update(statement);
+            var cfs = await db.ConsentFormStatements.FindAsync(statement.Id);
+            if (cfs is null)
+            {
+                return Results.NotFound();
+            }
+            cfs.Statement = statement.Statement;
+            cfs.IsActive = statement.IsActive;
             await db.SaveChangesAsync();
             return Results.Ok();
         });
 
         consentForm.MapPost("/statements", async ([FromBody] ConsentFormStatement statement, KimmyEsthiDbContext db) =>
         {
-            await db.AddAsync(statement);
+            var entityEntry = await db.AddAsync(statement);
             await db.SaveChangesAsync();
-            return Results.Ok();
+            return Results.Ok(entityEntry.Entity.Id);
         });
     }
 }
