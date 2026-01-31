@@ -1,0 +1,60 @@
+{
+  "api": {
+    "base_url": "http://localhost:5000",
+    "timeout": 60
+  },
+  "sqlite": {
+    "retry": {
+      "enabled": true,
+      "max_retries": 5,
+      "initial_delay_ms": 100,
+      "max_delay_ms": 3200
+    }
+  },
+  "test_scenarios": {
+    "consent_capacity_ramp": {
+      "enabled": true,
+      "type": "ramp_up",
+      "start_users": 1,
+      "end_users": 20,
+      "ramp_interval_seconds": 5,
+      "duration_seconds": 300,
+      "endpoint": "/consentForm",
+      "method": "POST",
+      "client_flow": "new_clients"
+    },
+    "consent_write_submission": {
+      "enabled": true,
+      "concurrent_users": 15,
+      "duration_seconds": 120,
+      "ramp_up_seconds": 10,
+      "endpoint": "/consentForm",
+      "method": "POST",
+      "client_flow": "new_clients"
+    },
+    "consent_robustness": {
+      "enabled": true,
+      "concurrent_users": 15,
+      "duration_seconds": 120,
+      "ramp_up_seconds": 10,
+      "edge_cases": [
+        "empty_initialed_statements",
+        "missing_printed_name",
+        "missing_initials",
+        "missing_signature",
+        "malformed_base64",
+        "empty_client_id"
+      ]
+    }
+  },
+  "payload": {
+    "signature_kb_range": [10, 100],
+    "initials_kb_range": [5, 30],
+    "statements_count_range": [5, 15]
+  },
+  "reporting": {
+    "output_file": "consent_stress_test_results.json",
+    "real_time_display": true,
+    "log_level": "info"
+  }
+}
