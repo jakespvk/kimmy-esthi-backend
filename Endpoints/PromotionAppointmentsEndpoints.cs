@@ -43,7 +43,7 @@ public static class PromotionAppointmentEndpoints
                             DateTime = date.DateTime,
                             Status = await db.Appointments.AnyAsync(x =>
                                 x.DateTime.Date == date.DateTime.Date
-                                && x.Status == AppointmentStatus.Available
+                                && x.Status == false
                             ),
                         }
                     );

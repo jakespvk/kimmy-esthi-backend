@@ -40,7 +40,7 @@ public static class AppointmentEndpoints
                             DateTime = date.DateTime,
                             Status = await db.Appointments.AnyAsync(x =>
                                 x.DateTime.Date == date.DateTime.Date
-                                && x.Status == AppointmentStatus.Available
+                                && x.Status == false
                             ),
                         }
                     );
@@ -85,7 +85,7 @@ public static class AppointmentEndpoints
                 {
                     return Results.BadRequest();
                 }
-                var client = await db.Clients.FindAsync(appointmentRequest.ScheduledAppointment.Client.Email);
+                var client = await db.Clients.Where(x => x.Email == appointmentRequest.ScheduledAppointment.Client.Email).FirstOrDefaultAsync();
                 appointmentToUpdate.ScheduledAppointment = new ScheduledAppointment
                 {
                     ServiceName = appointmentRequest.ScheduledAppointment.ServiceName,
@@ -109,7 +109,7 @@ public static class AppointmentEndpoints
                         Name = appointmentRequest.Promotion.Name,
                     };
                 }
-                appointmentToUpdate.Status = AppointmentStatus.Booked;
+                appointmentToUpdate.Status = true;
                 await db.SaveChangesAsync();
                 await emailService.SendNotificationEmail(appointmentToUpdate);
                 await emailService.SendAppointmentRequestEmail(

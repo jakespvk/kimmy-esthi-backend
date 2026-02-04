@@ -70,6 +70,7 @@ public static class AdminEndpoints
                 await db.SaveChangesAsync();
                 if (failedToAddAppointments.Count > 0)
                 {
+                    Console.WriteLine(failedToAddAppointments[0]);
                     return Results.BadRequest(failedToAddAppointments);
                 }
                 return Results.Ok();
@@ -88,7 +89,7 @@ public static class AdminEndpoints
                 if (booked && includeArchived)
                 {
                     return await db
-                        .Appointments.Where(x => x.Status == AppointmentStatus.Booked)
+                        .Appointments.Where(x => x.Status == true)
                         .Include(x => x.ScheduledAppointment)
                         .OrderBy(x => x.DateTime)
                         .ToListAsync();
@@ -97,7 +98,7 @@ public static class AdminEndpoints
                 {
                     return await db
                         .Appointments.Where(x =>
-                            x.Status == AppointmentStatus.Booked && x.DateTime.Date == ((DateTime)date).Date
+                            x.Status == true && x.DateTime.Date == ((DateTime)date).Date
                         )
                         .Include(x => x.ScheduledAppointment)
                         .OrderBy(x => x.DateTime)
@@ -106,7 +107,7 @@ public static class AdminEndpoints
                 else if (booked)
                 {
                     return await db
-                        .Appointments.Where(x => x.Status == AppointmentStatus.Booked && x.DateTime >= DateTime.Now.AddDays(-1))
+                        .Appointments.Where(x => x.Status == true && x.DateTime >= DateTime.Now.AddDays(-1))
                         .Include(x => x.ScheduledAppointment)
                         .OrderBy(x => x.DateTime)
                         .ToListAsync();
