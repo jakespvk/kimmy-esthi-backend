@@ -12,4 +12,6 @@ public class Client
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public List<string>? SkinConcerns { get; set; }
+    public string? Gender { get; set; }
+    public DateTime? DOB { get; set; }
 }

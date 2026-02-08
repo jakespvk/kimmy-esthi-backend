@@ -55,5 +55,33 @@ public static class ConsentFormEndpoints
             await db.SaveChangesAsync();
             return Results.Ok(entityEntry.Entity.Id);
         });
+
+        consentForm.MapDelete("/statements/{id}", async (int id, KimmyEsthiDbContext db) =>
+        {
+            var statementToDelete = await db.ConsentFormStatements.FindAsync(id);
+            if (statementToDelete == null)
+            {
+                return Results.NotFound();
+            }
+            db.ConsentFormStatements.Remove(statementToDelete);
+            await db.SaveChangesAsync();
+            return Results.Ok();
+        });
+
+        consentForm.MapPost("/clientInfo", async ([FromBody] ConsentFormClientInfo clientInfo, KimmyEsthiDbContext db) =>
+        {
+            var client = new Client
+            {
+                PreferredName = clientInfo.FullName,
+                Email = clientInfo.Email,
+                PhoneNumber = clientInfo.PhoneNumber,
+                DOB = clientInfo.DOB,
+                Gender = clientInfo.Gender,
+            };
+
+            await db.Clients.AddAsync(client);
+            await db.SaveChangesAsync();
+            return Results.Ok();
+        });
     }
 }
