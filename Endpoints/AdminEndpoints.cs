@@ -48,7 +48,7 @@ public static class AdminEndpoints
 
         admin.MapPost(
             "/{token}/appointments",
-            async (string token, Appointment[] appointments, KimmyEsthiDbContext db) =>
+            async (string token, List<Appointment> appointments, KimmyEsthiDbContext db) =>
             {
                 if (!await db.AdminUsers.AnyAsync(x => x.Token == token))
                 {
@@ -64,6 +64,7 @@ public static class AdminEndpoints
                     else if (await db.Appointments.AnyAsync(x => x.DateTime == appt.DateTime))
                     {
                         failedToAddAppointments.Add($"Appointment: {appt.DateTime:yyyy-MM-dd HH:mm} already exists");
+                        appointments.Remove(appt);
                     }
                 }
                 await db.AddRangeAsync(appointments);

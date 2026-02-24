@@ -3,16 +3,19 @@ using System;
 using KimmyEsthi.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace kimmy_esthi_backend.Migrations
+namespace KimmyEsthi.Migrations
 {
     [DbContext(typeof(KimmyEsthiDbContext))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20260208210607_AddSkincareHistoryQuestionnaire")]
+    partial class AddSkincareHistoryQuestionnaire
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -139,24 +142,6 @@ namespace kimmy_esthi_backend.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("KimmyEsthi.ConsentForm.ConsentAndAcknowledgement", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Signature")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ConsentAndAcknowledgements");
-                });
-
             modelBuilder.Entity("KimmyEsthi.ConsentForm.ConsentForm", b =>
                 {
                     b.Property<Guid>("Id")
@@ -214,88 +199,52 @@ namespace kimmy_esthi_backend.Migrations
                     b.ToTable("ConsentFormStatements");
                 });
 
-            modelBuilder.Entity("KimmyEsthi.ConsentForm.EmergencyContact", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Relationship")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmergencyContacts");
-                });
-
-            modelBuilder.Entity("KimmyEsthi.ConsentForm.ProductsUsed", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Products")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductsUsed");
-                });
-
             modelBuilder.Entity("KimmyEsthi.ConsentForm.SkincareHistoryQuestionnaire", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Allergies")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Allergies")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("Botox")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Botox")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("ChemPeel")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ChemPeel")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("EverReceivedFacial")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HairRemoval")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("LastChemPeelDate")
+                    b.Property<string>("EverReceivedFacial")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("LastFacialDate")
+                    b.Property<string>("HairRemoval")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("MedicalConditions")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LastChemPeelDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("NegativeReaction")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("LastFacialDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("Retinol")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MedicalConditions")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NegativeReaction")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Retinol")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SkinType")
                         .IsRequired()

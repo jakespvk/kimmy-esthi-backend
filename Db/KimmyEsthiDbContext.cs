@@ -19,6 +19,10 @@ public class KimmyEsthiDbContext : DbContext
     public DbSet<Promotion> Promotions => Set<Promotion>();
     public DbSet<Service> Services => Set<Service>();
     public DbSet<ConsentFormStatement> ConsentFormStatements => Set<ConsentFormStatement>();
+    public DbSet<SkincareHistoryQuestionnaire> SkincareHistoryQuestionnaires => Set<SkincareHistoryQuestionnaire>();
+    public DbSet<EmergencyContact> EmergencyContacts => Set<EmergencyContact>();
+    public DbSet<ConsentAndAcknowledgement> ConsentAndAcknowledgements => Set<ConsentAndAcknowledgement>();
+    public DbSet<ProductsUsed> ProductsUsed => Set<ProductsUsed>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +57,12 @@ public class KimmyEsthiDbContext : DbContext
             .HasOne(x => x.ConsentForm)
             .WithOne()
             .HasForeignKey<ConsentForm.ConsentForm>(x => x.ClientId);
+
+        modelBuilder
+            .Entity<Client>()
+            .HasOne(x => x.SkincareHistoryQuestionnaire)
+            .WithOne()
+            .HasForeignKey<SkincareHistoryQuestionnaire>(x => x.ClientId);
 
         modelBuilder
             .Entity<Service>()

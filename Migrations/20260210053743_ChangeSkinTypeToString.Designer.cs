@@ -3,16 +3,19 @@ using System;
 using KimmyEsthi.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace kimmy_esthi_backend.Migrations
+namespace KimmyEsthi.Migrations
 {
     [DbContext(typeof(KimmyEsthiDbContext))]
-    partial class AppointmentDbModelSnapshot : ModelSnapshot
+    [Migration("20260210053743_ChangeSkinTypeToString")]
+    partial class ChangeSkinTypeToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");

@@ -8,6 +8,7 @@ public class Client
     public Guid ClientId { get; set; }
     public Guid AppointmentId { get; set; }
     public ConsentForm.ConsentForm? ConsentForm { get; set; }
+    public ConsentForm.SkincareHistoryQuestionnaire? SkincareHistoryQuestionnaire { get; set; }
     public required string PreferredName { get; set; }
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
