@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
+namespace KimmyEsthi.Endpoints;
+
 public static class AppointmentEndpoints
 {
     public static void Map(WebApplication app)

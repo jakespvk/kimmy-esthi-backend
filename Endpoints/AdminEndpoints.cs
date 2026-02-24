@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
+namespace KimmyEsthi.Endpoints;
+
 public static class AdminEndpoints
 {
     public static void Map(WebApplication app)

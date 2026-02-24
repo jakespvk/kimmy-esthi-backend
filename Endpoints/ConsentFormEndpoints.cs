@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
+namespace KimmyEsthi.Endpoints;
+
 public static class ConsentFormEndpoints
 {
     public static void Map(WebApplication app)
@@ -25,7 +27,7 @@ public static class ConsentFormEndpoints
             return Results.Ok(await db.ConsentFormStatements.Where(x => x.IsActive).ToArrayAsync());
         });
 
-        consentForm.MapPost("", async ([FromBody] ConsentForm consentForm, KimmyEsthiDbContext db) =>
+        consentForm.MapPost("", async ([FromBody] ConsentForm.ConsentForm consentForm, KimmyEsthiDbContext db) =>
         {
             var client = await db.Clients
                 .FindAsync(consentForm.ClientId);

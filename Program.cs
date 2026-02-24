@@ -8,16 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 Env.Load();
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+const string KimmyEsthiCorsPolicy = "KimmyEsthiCorsPolicy";
 var builder = WebApplication.CreateSlimBuilder(args);
 builder.Services.AddDbContext<KimmyEsthiDbContext>(opt => opt.UseSqlite("Data Source=Db/db1.db;"));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        name: MyAllowSpecificOrigins,
+        name: KimmyEsthiCorsPolicy,
         policy =>
         {
-            policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            policy.WithOrigins(["http://localhost:3000", "https://sunsetkimcare.com"]).AllowAnyMethod().AllowAnyHeader();
         }
     );
 });
@@ -25,7 +25,7 @@ builder.Services.AddScoped<EmailService>();
 
 var app = builder.Build();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(KimmyEsthiCorsPolicy);
 
 AppointmentEndpoints.Map(app);
 PromotionAppointmentEndpoints.Map(app);

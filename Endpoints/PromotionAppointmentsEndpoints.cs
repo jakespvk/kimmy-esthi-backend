@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
+namespace KimmyEsthi.Endpoints;
+
 public static class PromotionAppointmentEndpoints
 {
     public static void Map(WebApplication app)
