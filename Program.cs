@@ -33,5 +33,6 @@ AdminEndpoints.Map(app);
 ConsentFormEndpoints.Map(app);
 ServicesEndpoints.Map(app);
 TestEmailEndpoint.Map(app);
+ReviewEndpoints.Map(app);
 
 app.Run();

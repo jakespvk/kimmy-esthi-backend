@@ -3,6 +3,7 @@ using KimmyEsthi.Admin;
 using KimmyEsthi.Appointments;
 using KimmyEsthi.Clients;
 using KimmyEsthi.ConsentForm;
+using KimmyEsthi.Reviews;
 using KimmyEsthi.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ public class KimmyEsthiDbContext : DbContext
     public DbSet<EmergencyContact> EmergencyContacts => Set<EmergencyContact>();
     public DbSet<ConsentAndAcknowledgement> ConsentAndAcknowledgements => Set<ConsentAndAcknowledgement>();
     public DbSet<ProductsUsed> ProductsUsed => Set<ProductsUsed>();
+    public DbSet<Review> Reviews => Set<Review>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,6 +35,8 @@ public class KimmyEsthiDbContext : DbContext
 
         modelBuilder.Entity<Client>().HasKey(c => c.ClientId);
         modelBuilder.Entity<Client>().HasIndex(c => c.Email).IsUnique();
+
+        modelBuilder.Entity<Review>().HasKey(r => r.ReviewId);
 
         modelBuilder
             .Entity<Appointment>()
