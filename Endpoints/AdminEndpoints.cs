@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using KimmyEsthi.Admin;
 using KimmyEsthi.Appointments;
+using KimmyEsthi.ConsentForm;
 using KimmyEsthi.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -158,6 +159,43 @@ public static class AdminEndpoints
                     }
                     await db.SaveChangesAsync();
                     return Results.Accepted("Appointment created for promotion");
+                });
+
+        admin.MapGet("{token}/consentForms", async ([FromQuery] string query, string token, KimmyEsthiDbContext db) =>
+                {
+                    if (!await db.AdminUsers.AnyAsync(x => x.Token == token))
+                    {
+                        Results.Challenge();
+                        return null;
+                    }
+                    return Results.Ok(await db.Appointments
+                            .Where(x => (x.ConsentForm != null
+                                    && x.ConsentForm.PrintedName.Contains(query))
+                                || (x.ScheduledAppointment != null
+                                    && (x.ScheduledAppointment.Client.Email != null
+                                        && x.ScheduledAppointment.Client.Email.Contains(query)
+                                        || x.ScheduledAppointment.Client.PhoneNumber != null
+                                        && x.ScheduledAppointment.Client.PhoneNumber.Contains(query))))
+                            .Select(x => new ConsentFormSummaryDTO
+                            {
+                                ConsentFormId = x.Id,
+                                ClientName = x.ScheduledAppointment!.Client.PreferredName,
+                                ClientEmail = x.ScheduledAppointment.Client.Email!,
+                                ClientPhone = x.ScheduledAppointment.Client.PhoneNumber!
+                            })
+                            .FirstOrDefaultAsync());
+                });
+
+        admin.MapGet("{token}/consentForms/{consentFormId}", async (Guid consentFormId, string token, KimmyEsthiDbContext db) =>
+                {
+                    if (!await db.AdminUsers.AnyAsync(x => x.Token == token))
+                    {
+                        Results.Challenge();
+                        return null;
+                    }
+                    return Results.Ok(await db.Appointments
+                            .Where(x => x.ConsentForm != null && x.ConsentForm.Id == consentFormId)
+                            .Select(x => x.ConsentForm).FirstOrDefaultAsync());
                 });
 
         // admin.MapPost("/secret", async (KimmyEsthiDbContext db) =>

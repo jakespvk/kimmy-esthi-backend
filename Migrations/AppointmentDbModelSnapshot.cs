@@ -36,7 +36,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdminUsers");
+                    b.ToTable("AdminUsers", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Appointments.Appointment", b =>
@@ -56,7 +56,7 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasIndex("DateTime")
                         .IsUnique();
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Appointments.Promotion", b =>
@@ -77,7 +77,7 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("Promotions");
+                    b.ToTable("Promotions", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Appointments.ScheduledAppointment", b =>
@@ -100,7 +100,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ScheduledAppointment");
+                    b.ToTable("ScheduledAppointment", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Clients.Client", b =>
@@ -136,7 +136,7 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.ConsentAndAcknowledgement", b =>
@@ -154,7 +154,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConsentAndAcknowledgements");
+                    b.ToTable("ConsentAndAcknowledgements", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.ConsentForm", b =>
@@ -193,7 +193,7 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("ConsentForm");
+                    b.ToTable("ConsentForm", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.ConsentFormStatement", b =>
@@ -211,7 +211,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ConsentFormStatements");
+                    b.ToTable("ConsentFormStatements", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.EmergencyContact", b =>
@@ -237,7 +237,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmergencyContacts");
+                    b.ToTable("EmergencyContacts", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.ProductsUsed", b =>
@@ -255,7 +255,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductsUsed");
+                    b.ToTable("ProductsUsed", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.ConsentForm.SkincareHistoryQuestionnaire", b =>
@@ -306,7 +306,7 @@ namespace kimmy_esthi_backend.Migrations
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("SkincareHistoryQuestionnaires");
+                    b.ToTable("SkincareHistoryQuestionnaires", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Reviews.Review", b =>
@@ -332,7 +332,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Services.Service", b =>
@@ -384,7 +384,7 @@ namespace kimmy_esthi_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("KimmyEsthi.Appointments.Promotion", b =>
